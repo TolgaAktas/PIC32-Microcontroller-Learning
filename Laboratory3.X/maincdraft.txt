@@ -1,0 +1,72 @@
+#include "math_ops.h"
+#include "display.h"
+#include <xc.h>
+#include <stdlib.h>
+
+int main(){
+
+    math_ops_t math_ops;
+    math_ops_init(&math_ops);
+    
+    
+    //SET LEDS AS OUTPUT
+    TRISA = 0x0000;
+    DDPCON = 0x0000;
+    DDPCONbits.JTAGEN = 0;
+    LATA = 0x0000;
+    
+    
+    //SET SWITCHES AS INPUTS
+    TRISDbits.TRISD6 = 1; //S3 button input
+    TRISDbits.TRISD7 = 1; //S6 button input
+    TRISAbits.TRISA7 = 1; //S5 button input
+    TRISDbits.TRISD13 = 1;//S4 button input
+    
+    delay(40000);
+    
+    display_initialize();
+    display_enable();
+    
+    
+    display_write("1",2);
+ 
+    display_enable();
+    delay(100000);
+  
+    while(1){
+        
+//        if(~PORTDbits.RD6){ //s3
+//            LATAbits.LATA0 = 1;
+//            math_ops.a = math_ops.a + 1;
+//            math_ops_update(&math_ops);
+//        }
+//        
+//        if(~PORTDbits.RD13){ //s4
+//            LATAbits.LATA1 = 1;
+//        }
+//        
+//        if(~PORTAbits.RA7){ //s5
+//            LATAbits.LATA2 = 1;
+//            
+//        }
+//        
+//        if(~PORTDbits.RD7){ //s6
+//            LATAbits.LATA3 = 1;
+//            math_ops.b = math_ops.b + 1;
+//            math_ops_update(&math_ops);
+//            
+//        }
+        
+        LATAbits.LATA0 = ~PORTDbits.RD6;
+        LATAbits.LATA1 = ~PORTDbits.RD13;
+        LATAbits.LATA2 = ~PORTAbits.RA7;
+        LATAbits.LATA3 = ~PORTDbits.RD7;
+        
+    }
+
+
+
+
+
+    return 0;
+}

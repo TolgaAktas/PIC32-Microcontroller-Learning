@@ -1,0 +1,111 @@
+
+#include <proc/p32mx795f512l.h>
+
+void delay(long int cycles){
+    int i = cycles;
+    
+    while(i > 0){
+        i--;
+    }
+}
+
+void display_enable(){
+    //Enable is in PORTD
+    TRISDbits.TRISD4= 0;
+    LATDbits.LATD4 = 1;
+    
+    delay(10000);
+    LATDbits.LATD4 = 0;
+    delay(10000);
+}
+
+void display_clear(){
+    display_enable();
+    LATE = 0x0000;
+    LATEbits.LATE0 = 1;
+    delay(100000);
+}
+
+
+void display_initialize(){
+    
+    display_enable();
+    //RS = 0
+    TRISBbits.TRISB15 = 0;
+    LATBbits.LATB15 = 0;
+    
+    //RW = 0
+    TRISDbits.TRISD5 = 0;
+    LATDbits.LATD5 = 0;
+    
+    //DB bits
+    TRISE = 0x0000;
+    LATEbits.LATE1=0;
+    LATEbits.LATE2=1;
+    LATEbits.LATE3=1;
+    LATEbits.LATE4=1;
+    LATEbits.LATE5=1;
+    LATEbits.LATE6=0;
+    LATEbits.LATE7=0;
+    
+    delay(10000);
+    
+    display_enable();
+    
+    //Display ON, Cursor OFF, BLINK OFF
+
+    LATE = 0x0000;
+    LATEbits.LATE3 = 1;
+    LATEbits.LATE2 = 1;
+    
+    delay(10000);
+    
+    display_enable();
+    display_clear();
+    
+    //Entry Mode Set
+    display_enable();
+    
+   //RS = 0
+    TRISBbits.TRISB15 = 0;
+    LATBbits.LATB15 = 0;
+    
+    //RW = 0
+    TRISDbits.TRISD5 = 0;
+    LATDbits.LATD5 = 0;
+    
+    //DB bits
+    LATE = 0x0006;
+
+}
+
+void display_write(char* data, int length){
+
+    //TODO: Finish the rest of the display_write function
+
+    display_enable();
+    LATBbits.LATB15 =1;
+    LATE = 0x31;
+        
+    LATBbits.LATB15 = 0;
+    
+    
+//    int temp = 0; 
+//    int i = 0;
+//    for(i = 0; i < length; i++){
+//        
+//        display_enable();
+//        //RS=1
+//        LATBbits.LATB15 = 1;
+//        //Set the pattern code and write it.
+//        temp = 0x0030 | data[i];
+//        LATEbits.w = temp;
+//        
+//        //RS=0
+//        LATBbits.LATB15 = 0;
+//        
+//    }
+    
+    
+}
+
